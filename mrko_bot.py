@@ -1,6 +1,5 @@
 
-# Mrko TikTok Bot with Admin-Only Access & Approval Requests
-
+import os
 import random
 import asyncio
 import requests
@@ -11,7 +10,7 @@ from telegram.ext import (
 )
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-BOT_TOKEN = '7661780419:AAG73BWEA8iW1Hc3qnjz8Vk6zG_c1xcs9R0'
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
 ADMIN_ID = 7058689089  # Replace with your actual Telegram user ID
 
 HASHTAGS = ["#viral", "#fyp", "#ea", "#chicks", "#chix", "#eabab", "#masarap", "#babae"]
@@ -79,8 +78,6 @@ async def drop_videos(context, chat_id, count=3, nsfw_mode="mixed", snipe=False,
         await context.bot.send_video(chat_id, vid, caption=DROP_CAPTION)
         await asyncio.sleep(1)
 
-# --- ACCESS CHECK ---
-
 async def is_approved(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     if user.id == ADMIN_ID or user.id in approved_users:
@@ -114,8 +111,6 @@ def protected_command(func):
         if await is_approved(update, context):
             return await func(update, context)
     return wrapper
-
-# --- COMMANDS ---
 
 @protected_command
 async def command_mrko(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -176,8 +171,6 @@ async def command_setcount(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except:
         await update.message.reply_text("Usage: /setcount [1-5]")
 
-# --- Callback Handler for Approvals ---
-
 async def handle_access_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -195,8 +188,6 @@ async def handle_access_callback(update: Update, context: ContextTypes.DEFAULT_T
         await context.bot.send_message(uid, "❌ Your request was declined. You cannot use this bot.")
         await query.edit_message_text("❌ User has been declined.")
 
-# --- Scheduler ---
-
 async def run_auto_drops(bot):
     for chat_id in auto_channels:
         try:
@@ -208,8 +199,6 @@ async def run_auto_drops(bot):
             await drop_videos(bot, user_id, 1, silent=True)
         except:
             continue
-
-# --- Main ---
 
 async def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
@@ -232,5 +221,4 @@ async def main():
     await app.run_polling()
 
 if __name__ == '__main__':
-    import asyncio
     asyncio.run(main())
