@@ -11,7 +11,7 @@ from telegram.ext import (
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
-ADMIN_ID = 7058689089  # Replace with your actual Telegram user ID
+ADMIN_ID = 7058689089  # Hardcoded your Telegram user ID
 
 HASHTAGS = ["#viral", "#fyp", "#ea", "#chicks", "#chix", "#eabab", "#masarap", "#babae"]
 NSFW_WORDS = ["onlyfans", "18+", "nude", "horny", "hub", "p0rn"]
