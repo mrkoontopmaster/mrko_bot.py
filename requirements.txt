@@ -1,0 +1,7 @@
+telethon==1.31.3
+aiohttp==3.9.5
+beautifulsoup4==4.12.2
+requests==2.31.0
+tqdm==4.66.1
+colorama==1.4.6
+yt-dlp==2025.8.1
